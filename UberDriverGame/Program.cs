@@ -1,8 +1,15 @@
-﻿class Program
+﻿using System;
+
+class Program
 {
     static void Main()
     {
-        GameMenu.display();
+        Console.CursorVisible = false;
+        while (true)
+        {
+            Utilities.checkConsoleSize();
+            GameMenu.display();
+        }
     }
 }
 
