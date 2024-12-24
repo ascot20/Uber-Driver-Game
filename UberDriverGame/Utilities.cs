@@ -24,8 +24,10 @@ class Utilities
     public static void checkConsoleSize()
     {
         bool sizeCheckPass;
+        
         do
         {
+            Console.SetBufferSize(Console.LargestWindowWidth, Console.LargestWindowHeight);
             Console.Clear();
             int windowWidth = Console.WindowWidth;
             int windowHeight = Console.WindowHeight;

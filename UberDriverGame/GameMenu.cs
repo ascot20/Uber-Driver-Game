@@ -46,7 +46,6 @@ class GameMenu
                 Console.WriteLine();
             }
 
-            
             key = Console.ReadKey(true).Key;
             Utilities.checkConsoleSize();
 
