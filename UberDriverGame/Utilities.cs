@@ -27,8 +27,10 @@ class Utilities
         
         do
         {
-            Console.SetBufferSize(Console.LargestWindowWidth, Console.LargestWindowHeight);
+            //clear entire console including text not in view
             Console.Clear();
+            Console.WriteLine("\x1b[3J");
+
             int windowWidth = Console.WindowWidth;
             int windowHeight = Console.WindowHeight;
 
