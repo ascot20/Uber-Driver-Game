@@ -19,21 +19,50 @@ class GameMenu
 
     public static int display()
     {
-        drawASCIIArt();
-
         List<string> menuOption = new List<string>();
         menuOption.Add("New Game");
         menuOption.Add("Load Game");
         menuOption.Add("Exit");
 
-        Console.WriteLine();
-        for (int i = 0; i < menuOption.Count; i++)
+        int menuOptionLength = menuOption.Count;
+        int selectedOptionIndex = 0;
+        ConsoleKey key;
+        do
         {
-            Utilities.centerString(menuOption[i]);
-            Console.WriteLine();
-        }
+            Console.Clear();
+            drawASCIIArt();
 
-        return 0;
+            Utilities.centerString("Use Up or Down arrow key to select option.\n");
+            for (int i = 0; i < menuOptionLength; i++)
+            {
+                if (i == selectedOptionIndex)
+                {
+                    Utilities.centerString(menuOption[i] + " <--");
+                }
+                else
+                {
+                    Utilities.centerString(menuOption[i]);
+                }
+
+                Console.WriteLine();
+            }
+
+            key = Console.ReadKey(true).Key;
+
+            if (key == ConsoleKey.UpArrow)
+            {
+                selectedOptionIndex = (selectedOptionIndex - 1 + menuOptionLength) % menuOptionLength;
+            }
+
+            else if (key == ConsoleKey.DownArrow)
+            {
+                selectedOptionIndex = (selectedOptionIndex + 1) % menuOptionLength;
+            }
+
+        } while (key != ConsoleKey.Enter);
+
+
+        return selectedOptionIndex;
     }
 }
 

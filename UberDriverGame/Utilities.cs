@@ -14,7 +14,5 @@ class Utilities
             Console.SetCursorPosition((Console.WindowWidth - lineLength) / 2, Console.CursorTop);
             Console.WriteLine(line);
         }
-
-        
     }
 }
