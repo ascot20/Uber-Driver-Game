@@ -5,6 +5,7 @@ class Utilities
     //constants
     const int minWindowWidth = 84;
     const int minWindowHeight = 27;
+    const string clearScreenEscSeq = "\x1b[3J";
 
     public static void centerString(string text)
     {
@@ -29,7 +30,7 @@ class Utilities
         {
             //clear entire console including text not in view
             Console.Clear();
-            Console.WriteLine("\x1b[3J");
+            Console.WriteLine(clearScreenEscSeq);
 
             int windowWidth = Console.WindowWidth;
             int windowHeight = Console.WindowHeight;
