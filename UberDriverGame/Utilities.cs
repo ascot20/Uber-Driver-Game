@@ -7,25 +7,33 @@ class Utilities
     const int minWindowHeight = 27;
     const string clearScreenEscSeq = "\x1b[3J";
 
+
     public static void centerString(string text)
+    {
+        int textLength = text.Length;
+
+        Console.SetCursorPosition((Console.WindowWidth - textLength) / 2, Console.CursorTop);
+        Console.Write(text);
+    }
+
+
+    public static void centerStrings(string text)
     {
         string[] lines = text.Split("\n");
 
         for (int i = 0; i < lines.Length; i++)
         {
             string line = lines[i];
-            int lineLength = line.Length;
-            int cursorLeftPosition = (Console.WindowWidth - lineLength) / 2;
-
-            Console.SetCursorPosition(cursorLeftPosition, Console.CursorTop);
-            Console.WriteLine(line);
+            centerString(line);
+            Console.WriteLine();
         }
     }
+
 
     public static void checkConsoleSize()
     {
         bool sizeCheckPass;
-        
+
         do
         {
             //clear entire console including text not in view
@@ -38,7 +46,7 @@ class Utilities
             if (windowWidth < minWindowWidth || windowHeight < minWindowHeight)
             {
                 sizeCheckPass = false;
-                centerString("Please resize window and press any key to continue.");
+                centerStrings("Please resize window and press any key to continue.");
                 Console.ReadKey();
             }
             else

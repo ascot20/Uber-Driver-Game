@@ -12,7 +12,7 @@ class GameMenus
                                     "██║   ██║██╔══██╗██╔══╝  ██╔══██╗    ██║  ██║██╔══██╗██║╚██╗ ██╔╝██╔══╝  ██╔══██╗\r\n" +
                                     "╚██████╔╝██████╔╝███████╗██║  ██║    ██████╔╝██║  ██║██║ ╚████╔╝ ███████╗██║  ██║\r\n" +
                                     " ╚═════╝ ╚═════╝ ╚══════╝╚═╝  ╚═╝    ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═══╝  ╚══════╝╚═╝  ╚═╝\r\n";
-        Utilities.centerString(gameTitleInASCII);
+        Utilities.centerStrings(gameTitleInASCII);
     }
 
 
@@ -30,16 +30,16 @@ class GameMenus
         {
             drawASCIIArt();
 
-            Utilities.centerString("Use Up or Down arrow key to select option.\n");
+            Utilities.centerStrings("Use Up or Down arrow key to select option.\n");
             for (int i = 0; i < menuOptionLength; i++)
             {
                 if (i == selectedOptionIndex)
                 {
-                    Utilities.centerString(menuOption[i] + " <--");
+                    Utilities.centerStrings(menuOption[i] + " <--");
                 }
                 else
                 {
-                    Utilities.centerString(menuOption[i]);
+                    Utilities.centerStrings(menuOption[i]);
                 }
 
                 Console.WriteLine();
@@ -61,6 +61,19 @@ class GameMenus
         } while (key != ConsoleKey.Enter);
 
         return selectedOptionIndex;
+    }
+
+    public static string displayNewGameMenu()
+    {
+        drawASCIIArt();
+
+        Utilities.centerString("Enter driver name: ");
+        Console.CursorVisible = true;
+        string username = Console.ReadLine();
+        Console.CursorVisible = false;
+        Utilities.checkConsoleSize();
+
+        return username;
     }
 
 }

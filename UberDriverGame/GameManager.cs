@@ -12,7 +12,13 @@ class GameManager
         switch (optionSelected)
         {
             case 0:
-                Console.WriteLine("Nothing");
+                GameMenus.displayNewGameMenu();
+                break;
+            case 1:
+                Console.WriteLine("Load game");
+                break;
+            case 2:
+                Console.WriteLine("Exit game");
                 break;
         }
     }
