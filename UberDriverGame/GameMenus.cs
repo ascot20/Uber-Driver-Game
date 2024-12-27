@@ -65,13 +65,19 @@ class GameMenus
 
     public static string displayNewGameMenu()
     {
-        drawASCIIArt();
-
-        Utilities.centerString("Enter driver name: ");
         Console.CursorVisible = true;
-        string username = Console.ReadLine();
+        string username;
+        do
+        {
+            drawASCIIArt();
+
+            Utilities.centerString("Enter driver name: ");
+            
+            username = Console.ReadLine();
+            Utilities.checkConsoleSize();
+        } while (username.Length == 0 || username == "");
+
         Console.CursorVisible = false;
-        Utilities.checkConsoleSize();
 
         return username;
     }
