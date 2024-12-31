@@ -6,6 +6,7 @@ class Utilities
     const int minWindowWidth = 94;
     const int minWindowHeight = 37;
     const string clearScreenEscSeq = "\x1b[3J";
+    const string separator = "\n";
 
 
     public static void horizontalCenterCursor(string text)
@@ -18,7 +19,7 @@ class Utilities
 
     public static void verticalCenterCursor(string text)
     {
-        int numOfLines = text.Split("\n").Length;
+        int numOfLines = text.Split(separator).Length;
 
         Console.SetCursorPosition(Console.CursorLeft, (Console.WindowHeight - numOfLines) / 2);
     }
@@ -26,7 +27,7 @@ class Utilities
 
     public static void bottomCenterCursor(string text)
     {
-        int numOfLines = text.Split("\n").Length;
+        int numOfLines = text.Split(separator).Length;
         int textLength = text.Length;
 
         Console.SetCursorPosition((Console.WindowWidth - textLength) / 2, Console.WindowHeight - numOfLines);
@@ -41,7 +42,7 @@ class Utilities
 
     public static void horCenterMultiLineString(string text)
     {
-        string[] lines = text.Split("\n");
+        string[] lines = text.Split(separator);
 
         for (int i = 0; i < lines.Length; i++)
         {
@@ -53,7 +54,7 @@ class Utilities
 
     public static void bottomCenterMultiLineString(string text)
     {
-        string[] lines = text.Split("\n");
+        string[] lines = text.Split(separator);
 
         for (int i = 0; i < lines.Length; i++)
         {
