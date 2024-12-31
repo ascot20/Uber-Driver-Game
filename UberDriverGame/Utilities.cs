@@ -3,40 +3,35 @@
 class Utilities
 {
     //constants
-    const int minWindowWidth = 94;
-    const int minWindowHeight = 37;
+    const int minWindowWidth = 170;
+    const int minWindowHeight = 40;
     const string clearScreenEscSeq = "\x1b[3J";
     const string separator = "\n";
 
 
-    public static void horizontalCenterCursor(string text)
+    public static void horizontalCenterCursor(int textWidth)
     {
-        int textLength = text.Length;
-
-        Console.SetCursorPosition((Console.WindowWidth - textLength) / 2, Console.CursorTop);
+        Console.SetCursorPosition((Console.WindowWidth - textWidth) / 2, Console.CursorTop);
     }
 
 
-    public static void verticalCenterCursor(string text)
+    public static void verticalCenterCursor(int textHeight)
     {
-        int numOfLines = text.Split(separator).Length;
-
-        Console.SetCursorPosition(Console.CursorLeft, (Console.WindowHeight - numOfLines) / 2);
+        Console.SetCursorPosition(Console.CursorLeft, (Console.WindowHeight - textHeight) / 2);
     }
 
 
-    public static void bottomCenterCursor(string text)
+    public static void bottomCenterCursor(int textHeight)
     {
-        int numOfLines = text.Split(separator).Length;
         int bottomOffset = -1;
 
-        Console.SetCursorPosition(Console.WindowWidth / 2, Console.WindowHeight - numOfLines + bottomOffset);
+        Console.SetCursorPosition(Console.WindowWidth / 2, (Console.WindowHeight - textHeight) + bottomOffset);
     }
 
 
     public static void horCenterString(string text)
     {
-        horizontalCenterCursor(text);
+        horizontalCenterCursor(text.Length);
         Console.Write(text);
     }
 
@@ -47,15 +42,9 @@ class Utilities
         for (int i = 0; i < lines.Length; i++)
         {
             string line = lines[i];
-            horizontalCenterCursor(line);
+            horizontalCenterCursor(line.Length);
             Console.WriteLine(line);
         }
-    }
-
-    public static void bottomCenterMultiLineString(string text)
-    {
-        bottomCenterCursor(text);
-        horCenterMultiLineString(text);
     }
 
     public static void checkConsoleSize()
@@ -74,7 +63,7 @@ class Utilities
             if (windowWidth < minWindowWidth || windowHeight < minWindowHeight)
             {
                 sizeCheckPass = false;
-                horCenterMultiLineString("Please resize window and press any key to continue.");
+                horCenterMultiLineString("Please maximize window and press any key to continue.");
                 Console.ReadKey();
             }
             else
