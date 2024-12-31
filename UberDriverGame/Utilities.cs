@@ -3,29 +3,42 @@
 class Utilities
 {
     //constants
-    const int minWindowWidth = 84;
-    const int minWindowHeight = 27;
+    const int minWindowWidth = 94;
+    const int minWindowHeight = 37;
     const string clearScreenEscSeq = "\x1b[3J";
 
 
-    public static void centerString(string text)
+    public static void horizontalCenterCursor(string text)
     {
         int textLength = text.Length;
 
         Console.SetCursorPosition((Console.WindowWidth - textLength) / 2, Console.CursorTop);
-        Console.Write(text);
     }
 
 
-    public static void centerStrings(string text)
+    public static void verticalCenterCursor(string text)
+    {
+        int textLength = text.Length;
+
+        Console.SetCursorPosition(Console.CursorLeft, (Console.WindowHeight - textLength) / 2);
+    }
+
+
+    public static void horCenterString(string text)
+    {
+        horizontalCenterCursor(text);
+        Console.Write(text);
+    }
+
+    public static void horCenterMultiLineString(string text)
     {
         string[] lines = text.Split("\n");
 
         for (int i = 0; i < lines.Length; i++)
         {
             string line = lines[i];
-            centerString(line);
-            Console.WriteLine();
+            horizontalCenterCursor(line);
+            Console.WriteLine(line);
         }
     }
 
@@ -46,7 +59,7 @@ class Utilities
             if (windowWidth < minWindowWidth || windowHeight < minWindowHeight)
             {
                 sizeCheckPass = false;
-                centerStrings("Please resize window and press any key to continue.");
+                horCenterMultiLineString("Please resize window and press any key to continue.");
                 Console.ReadKey();
             }
             else

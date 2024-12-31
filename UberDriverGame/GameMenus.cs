@@ -12,7 +12,8 @@ class GameMenus
                                     "██║   ██║██╔══██╗██╔══╝  ██╔══██╗    ██║  ██║██╔══██╗██║╚██╗ ██╔╝██╔══╝  ██╔══██╗\r\n" +
                                     "╚██████╔╝██████╔╝███████╗██║  ██║    ██████╔╝██║  ██║██║ ╚████╔╝ ███████╗██║  ██║\r\n" +
                                     " ╚═════╝ ╚═════╝ ╚══════╝╚═╝  ╚═╝    ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═══╝  ╚══════╝╚═╝  ╚═╝\r\n";
-        Utilities.centerStrings(gameTitleInASCII);
+
+        Utilities.horCenterMultiLineString(gameTitleInASCII);
     }
 
 
@@ -30,16 +31,16 @@ class GameMenus
         {
             drawASCIIArt();
 
-            Utilities.centerStrings("Use Up or Down arrow key to select option.\n");
+            Utilities.horCenterMultiLineString("Use Up or Down arrow key to select option.\n");
             for (int i = 0; i < menuOptionLength; i++)
             {
                 if (i == selectedOptionIndex)
                 {
-                    Utilities.centerStrings(menuOption[i] + " <--");
+                    Utilities.horCenterMultiLineString(menuOption[i] + " <--");
                 }
                 else
                 {
-                    Utilities.centerStrings(menuOption[i]);
+                    Utilities.horCenterMultiLineString(menuOption[i]);
                 }
 
                 Console.WriteLine();
@@ -71,7 +72,7 @@ class GameMenus
         {
             drawASCIIArt();
 
-            Utilities.centerString("Enter driver name: ");
+            Utilities.horCenterString("Enter driver name: ");
             
             username = Console.ReadLine();
             Utilities.checkConsoleSize();
