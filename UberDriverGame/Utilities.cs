@@ -28,9 +28,9 @@ class Utilities
     public static void bottomCenterCursor(string text)
     {
         int numOfLines = text.Split(separator).Length;
-        int textLength = text.Length;
+        int bottomOffset = -1;
 
-        Console.SetCursorPosition((Console.WindowWidth - textLength) / 2, Console.WindowHeight - numOfLines);
+        Console.SetCursorPosition(Console.WindowWidth / 2, Console.WindowHeight - numOfLines + bottomOffset);
     }
 
 
@@ -54,14 +54,8 @@ class Utilities
 
     public static void bottomCenterMultiLineString(string text)
     {
-        string[] lines = text.Split(separator);
-
-        for (int i = 0; i < lines.Length; i++)
-        {
-            string line = lines[i];
-            bottomCenterCursor(line);
-            Console.WriteLine(line);
-        }
+        bottomCenterCursor(text);
+        horCenterMultiLineString(text);
     }
 
     public static void checkConsoleSize()
