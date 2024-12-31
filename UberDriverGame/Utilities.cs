@@ -18,9 +18,18 @@ class Utilities
 
     public static void verticalCenterCursor(string text)
     {
+        int numOfLines = text.Split("\n").Length;
+
+        Console.SetCursorPosition(Console.CursorLeft, (Console.WindowHeight - numOfLines) / 2);
+    }
+
+
+    public static void bottomCenterCursor(string text)
+    {
+        int numOfLines = text.Split("\n").Length;
         int textLength = text.Length;
 
-        Console.SetCursorPosition(Console.CursorLeft, (Console.WindowHeight - textLength) / 2);
+        Console.SetCursorPosition((Console.WindowWidth - textLength) / 2, Console.WindowHeight - numOfLines);
     }
 
 
@@ -42,6 +51,17 @@ class Utilities
         }
     }
 
+    public static void bottomCenterMultiLineString(string text)
+    {
+        string[] lines = text.Split("\n");
+
+        for (int i = 0; i < lines.Length; i++)
+        {
+            string line = lines[i];
+            bottomCenterCursor(line);
+            Console.WriteLine(line);
+        }
+    }
 
     public static void checkConsoleSize()
     {
