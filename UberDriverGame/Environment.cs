@@ -2,25 +2,25 @@
 
 class Environment
 {
-    private int[] roadLanesoffsets;
+    private int[] roadLaneoffsets;
     private char roadStrip = '║';
     private int lanePadding = 5;
 
-    public Environment(int[] lanesOffsets)
+    public Environment(int[] laneOffsets)
     {
-        this.roadLanesoffsets = lanesOffsets;
+        this.roadLaneoffsets = laneOffsets;
         drawRoad();
     }
 
     private void drawRoad()
     {
-        for (int i = 0; i < roadLanesoffsets.Length; i++)
+        for (int i = 0; i < roadLaneoffsets.Length; i++)
         {
             int bottomOffset = -1;
             int windowHeight = Console.WindowHeight + bottomOffset;
             for (int j = 0; j < windowHeight; j++)
             {
-                Console.SetCursorPosition(roadLanesoffsets[i] - lanePadding, j);
+                Console.SetCursorPosition(roadLaneoffsets[i] - lanePadding, j);
                 Console.WriteLine(roadStrip);
             }
         }
