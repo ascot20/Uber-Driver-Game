@@ -17,12 +17,21 @@ class Driver
             " .#.    .#.\r\n" +
             "  :%████%:\r\n";
     private int currentLane = 2;
-    private int[] laneOffsets = { 60,80,100 };
+    private int laneSpacing = 20;
+    private int[] laneOffsets;
 
     public Driver(string username)
     {
         this.username = username;
+        initializeLaneOffsets();
         deployCar();
+    }
+
+    private void initializeLaneOffsets()
+    {
+        int middleLaneOffset = Console.WindowWidth / 2;
+        laneOffsets = new int[] { middleLaneOffset - laneSpacing, middleLaneOffset, middleLaneOffset + laneSpacing,
+            middleLaneOffset + 2 * laneSpacing };
     }
 
     private void deployCar()
@@ -51,10 +60,14 @@ class Driver
 
     private void updateCarPosition()
     {
-        Console.Clear();
+        Utilities.checkConsoleSize();
+
+        Environment driverEnvironment = new Environment(laneOffsets);
 
         int carHeight = car.Split("\n").Length;
-        Utilities.bottomCenterCursor(carHeight);
+        int bottomOffset = 3;
+
+        Utilities.bottomCenterCursor(carHeight,bottomOffset);
 
 
         string[] carParts = car.Split("\n");
