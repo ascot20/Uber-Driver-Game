@@ -21,9 +21,9 @@ class Utilities
     }
 
 
-    public static void bottomCenterCursor(int textHeight)
+    public static void bottomCenterCursor(int textHeight, int offset)
     {
-        int bottomOffset = -1;
+        int bottomOffset = -offset;
 
         Console.SetCursorPosition(Console.WindowWidth / 2, (Console.WindowHeight - textHeight) + bottomOffset);
     }
