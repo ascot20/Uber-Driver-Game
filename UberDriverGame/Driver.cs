@@ -31,7 +31,7 @@ class Driver
     {
         int middleLaneOffset = Console.WindowWidth / 2;
         laneOffsets = new int[] { middleLaneOffset - laneSpacing, middleLaneOffset, middleLaneOffset + laneSpacing,
-            middleLaneOffset + 2 * laneSpacing };
+            middleLaneOffset + laneSpacing * 2 };
     }
 
     private void deployCar()
@@ -67,7 +67,7 @@ class Driver
         int carHeight = car.Split("\n").Length;
         int bottomOffset = 3;
 
-        Utilities.bottomCenterCursor(carHeight,bottomOffset);
+        Utilities.bottomCenterCursor(carHeight, bottomOffset);
 
 
         string[] carParts = car.Split("\n");
