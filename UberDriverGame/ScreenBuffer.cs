@@ -92,12 +92,12 @@ class ScreenBuffer
 
         for (int i = 0; i < stringHeight; i++)
         {
-            BufferString c;
-            c.xPos = stringText.xPos;
-            c.yPos = stringText.yPos + i;
-            c.text = lines[i];
+            BufferString s;
+            s.xPos = stringText.xPos;
+            s.yPos = stringText.yPos + i;
+            s.text = lines[i];
 
-            this.writeLine(c);
+            this.writeLine(s);
         }
     }
 
@@ -109,12 +109,12 @@ class ScreenBuffer
 
         for (int i = 0; i < stringHeight; i++)
         {
-            BufferString c;
-            c.xPos = stringText.xPos;
-            c.yPos = stringText.yPos + i;
-            c.text = lines[i];
+            BufferString s;
+            s.xPos = stringText.xPos;
+            s.yPos = stringText.yPos + i;
+            s.text = lines[i];
 
-            this.clearLine(c);
+            this.clearLine(s);
         }
     }
 
