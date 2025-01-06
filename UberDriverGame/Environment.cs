@@ -2,26 +2,40 @@
 
 class Environment
 {
-    private int[] roadLaneoffsets;
-    private char roadStrip = '║';
-    private int lanePadding = 5;
+    //constants
+    private const char roadStrip = '║';
+    private const int lanePadding = 5;
+    private const int laneSpacing = 20;
 
-    public Environment(int[] laneOffsets)
+    //static members
+    public static int[] laneOffsets;
+
+    public Environment(ScreenBuffer screenBuffer)
     {
-        this.roadLaneoffsets = laneOffsets;
-        drawRoad();
+        this.calculateLaneOffsets();
+        this.drawRoad(screenBuffer);
     }
 
-    private void drawRoad()
+    //calculates targeted lane offsets
+    private void calculateLaneOffsets()
     {
-        for (int i = 0; i < roadLaneoffsets.Length; i++)
+        int middleLaneOffset = Utilities.screenWidth / 2;
+        laneOffsets = new int[] { middleLaneOffset - laneSpacing, middleLaneOffset, middleLaneOffset + laneSpacing,
+            middleLaneOffset + laneSpacing * 2 };
+    }
+
+    private void drawRoad(ScreenBuffer screenBuffer)
+    {
+        for (int i = 0; i < laneOffsets.Length; i++)
         {
-            int bottomOffset = -1;
-            int windowHeight = Console.WindowHeight + bottomOffset;
-            for (int j = 0; j < windowHeight; j++)
+            for (int j = 0; j < Utilities.screenHeight; j++)
             {
-                Console.SetCursorPosition(roadLaneoffsets[i] - lanePadding, j);
-                Console.WriteLine(roadStrip);
+                BufferChar c;
+                c.xPos = laneOffsets[i] - lanePadding;
+                c.yPos = j;
+                c.character = roadStrip;
+
+                screenBuffer.writeChar(c);
             }
         }
     }
