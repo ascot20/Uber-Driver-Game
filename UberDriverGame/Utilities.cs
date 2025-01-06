@@ -7,6 +7,8 @@ class Utilities
     const int minWindowHeight = 40;
     const string clearScreenEscSeq = "\x1b[3J";
     const string separator = "\n";
+    public static int screenWidth;
+    public static int screenHeight;
 
 
     public static void horizontalCenterCursor(int textWidth)
@@ -14,18 +16,17 @@ class Utilities
         Console.SetCursorPosition((Console.WindowWidth - textWidth) / 2, Console.CursorTop);
     }
 
-
-    public static void verticalCenterCursor(int textHeight)
+    public static BufferString createBottomCenteredBufferString(string text)
     {
-        Console.SetCursorPosition(Console.CursorLeft, (Console.WindowHeight - textHeight) / 2);
-    }
+        int textWidth = text.Length;
+        int textHeight = text.Split(separator).Length;
 
+        BufferString s;
+        s.xPos = Console.WindowWidth - textWidth / 2;
+        s.yPos = Console.WindowHeight - textHeight;
+        s.text = text;
 
-    public static void bottomCenterCursor(int textHeight, int offset)
-    {
-        int bottomOffset = -offset;
-
-        Console.SetCursorPosition(Console.WindowWidth / 2, (Console.WindowHeight - textHeight) + bottomOffset);
+        return s;
     }
 
 
@@ -50,6 +51,8 @@ class Utilities
     public static void checkConsoleSize()
     {
         bool sizeCheckPass;
+        int currentWindowWidth;
+        int currentWindowHeight;
 
         do
         {
@@ -57,10 +60,10 @@ class Utilities
             Console.Clear();
             Console.WriteLine(clearScreenEscSeq);
 
-            int windowWidth = Console.WindowWidth;
-            int windowHeight = Console.WindowHeight;
+            currentWindowWidth = Console.WindowWidth;
+            currentWindowHeight = Console.WindowHeight;
 
-            if (windowWidth < minWindowWidth || windowHeight < minWindowHeight)
+            if (currentWindowWidth < minWindowWidth || currentWindowHeight < minWindowHeight)
             {
                 sizeCheckPass = false;
                 horCenterMultiLineString("Please maximize window and press any key to continue.");
@@ -72,5 +75,9 @@ class Utilities
             }
 
         } while (!sizeCheckPass);
+
+        screenWidth = currentWindowWidth;
+        screenHeight = currentWindowHeight;
     }
 }
+
