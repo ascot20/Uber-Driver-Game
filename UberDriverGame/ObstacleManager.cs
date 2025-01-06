@@ -29,8 +29,4 @@
         this.dummy.moveObstacle(screenBuffer);
     }
 
-    //private void clearObstacles(ScreenBuffer screenBuffer)
-    //{
-    //    this.dummy.clearObstacle(screenBuffer);
-    //}
 }
