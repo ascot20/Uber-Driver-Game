@@ -3,7 +3,7 @@ using System.Threading;
 
 class GameManager
 {
-    
+    int timeout = 50;
 
     public GameManager()
     {
@@ -63,7 +63,7 @@ class GameManager
 
             screenBuffer.renderToConsole();
 
-            Thread.Sleep(50);
+            Thread.Sleep(timeout);
 
         }
     }
