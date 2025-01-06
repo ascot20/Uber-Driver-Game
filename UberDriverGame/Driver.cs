@@ -1,7 +1,11 @@
-﻿using System;
-
-class Driver
+﻿class Driver
 {
+    //constants
+    const int defaultLane = 2;
+    const int minLane = 1;
+    const int maxLane = 3;
+
+    //fields
     private string username;
     private string car =
             "  .#████#.\r\n" +
@@ -16,66 +20,48 @@ class Driver
             " .%......%:\r\n" +
             " .#.    .#.\r\n" +
             "  :%████%:\r\n";
-    private int currentLane = 2;
-    private int laneSpacing = 20;
-    private int[] laneOffsets;
+    private int currentLane;
+    private BufferString carBuffer;
 
-    public Driver(string username)
+    public Driver(string username, ScreenBuffer screenBuffer)
     {
         this.username = username;
-        initializeLaneOffsets();
-        deployCar();
+        this.currentLane = defaultLane;
+        this.deployCar(screenBuffer);
     }
 
-    private void initializeLaneOffsets()
+    private void deployCar(ScreenBuffer screenBuffer)
     {
-        int middleLaneOffset = Console.WindowWidth / 2;
-        laneOffsets = new int[] { middleLaneOffset - laneSpacing, middleLaneOffset, middleLaneOffset + laneSpacing,
-            middleLaneOffset + laneSpacing * 2 };
+        this.updateCarPosition(screenBuffer);
     }
 
-    private void deployCar()
+    public void steerLeft(ScreenBuffer screenBuffer)
     {
-        updateCarPosition();
-    }
-
-    public void steerLeft()
-    {
-        if (currentLane > 1)
+        if (this.currentLane > minLane)
         {
-            currentLane -= 1;
-            updateCarPosition();
+            screenBuffer.clearLines(carBuffer);
+            this.currentLane -= 1;
+            this.updateCarPosition(screenBuffer);
         }
 
     }
 
-    public void steerRight()
+    public void steerRight(ScreenBuffer screenBuffer)
     {
-        if (currentLane < 3)
+        if (this.currentLane < maxLane)
         {
-            currentLane += 1;
-            updateCarPosition();
+            screenBuffer.clearLines(carBuffer);
+            this.currentLane += 1;
+            this.updateCarPosition(screenBuffer);
         }
     }
 
-    private void updateCarPosition()
+    private void updateCarPosition(ScreenBuffer screenBuffer)
     {
-        Utilities.checkConsoleSize();
+        this.carBuffer = Utilities.createBottomCenteredBufferString(this.car);
 
-        Environment driverEnvironment = new Environment(laneOffsets);
-
-        int carHeight = car.Split("\n").Length;
-        int bottomOffset = 3;
-
-        Utilities.bottomCenterCursor(carHeight, bottomOffset);
-
-
-        string[] carParts = car.Split("\n");
-        for (int i = 0; i < carHeight; i++)
-        {
-            string carPart = carParts[i];
-            Console.SetCursorPosition(laneOffsets[currentLane - 1], Console.CursorTop);
-            Console.WriteLine(carPart);
-        }
+        this.carBuffer.xPos = Environment.laneOffsets[this.currentLane - 1];
+        screenBuffer.writeLines(this.carBuffer);
     }
 }
+
