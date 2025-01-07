@@ -60,7 +60,7 @@
     {
         this.carBuffer = Utilities.createBottomCenteredBufferString(car);
 
-        this.carBuffer.xPos = Environment.laneOffsets[this.currentLane - 1];
+        this.carBuffer.xPos = Environment.getLaneOffsets()[this.currentLane - 1];
         screenBuffer.writeLines(this.carBuffer);
     }
 }
