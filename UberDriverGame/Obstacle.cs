@@ -10,16 +10,21 @@ class Obstacle
 
     //fields
     private string carObstacle;
-    private int currentLane;
-    private int firstRowPosition;
+    private string[] carObstacleParts;
+    public int carObstacleHeight;
+    public int currentLane;
+    public int firstRowPosition;
     private List<BufferString> carObstacleBuffers;
 
-    public Obstacle(string carObstacle)
+    static Random generator = new Random();
+
+    public Obstacle(string carObstacle, int firstRowPosition)
     {
-        Random generator = new Random();
         this.carObstacle = carObstacle;
+        this.carObstacleParts = this.carObstacle.Split(separator);
+        this.carObstacleHeight = this.carObstacleParts.Length;
         this.currentLane = generator.Next(minLane, maxLane + 1);
-        this.firstRowPosition = -carObstacle.Split(separator).Length;
+        this.firstRowPosition = firstRowPosition;
         this.carObstacleBuffers = new List<BufferString>();
     }
 
@@ -29,34 +34,33 @@ class Obstacle
         this.clearObstacle(screenBuffer);
 
         BufferString carObstacleBuffer;
-        int carHeight = carObstacle.Split(separator).Length;
-        string[] carParts = carObstacle.Split(separator);
 
-        for (int i = 0; i < carHeight; i++)
+        for (int i = 0; i < this.carObstacleHeight; i++)
         {
-            int currentRow = firstRowPosition + i;
+            int currentRow = this.firstRowPosition + i;
 
-            if (currentRow >= 0 && currentRow < Console.WindowHeight)
+            if (currentRow >= 0 && currentRow < Utilities.screenHeight)
             {
-                string carPart = carParts[i];
+                string carPart = this.carObstacleParts[i];
                 carObstacleBuffer.xPos = Environment.laneOffsets[currentLane - 1];
                 carObstacleBuffer.yPos = currentRow;
                 carObstacleBuffer.text = carPart;
+
                 screenBuffer.writeLine(carObstacleBuffer);
-                carObstacleBuffers.Add(carObstacleBuffer);
+                this.carObstacleBuffers.Add(carObstacleBuffer);
             }
         }
-        firstRowPosition += 1;
+        this.firstRowPosition += 1;
     }
 
-    //clear buffers in before every move
+    //clear buffers in buffer before every move
     private void clearObstacle(ScreenBuffer screenBuffer)
     {
-        for (int i = 0; i < carObstacleBuffers.Count; i++)
+        for (int i = 0; i < this.carObstacleBuffers.Count; i++)
         {
-            screenBuffer.clearLine(carObstacleBuffers[i]);
+            screenBuffer.clearLine(this.carObstacleBuffers[i]);
         }
-        carObstacleBuffers.Clear();
+        this.carObstacleBuffers.Clear();
     }
 }
 
