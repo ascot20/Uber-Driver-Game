@@ -42,6 +42,7 @@ class GameManager
 
         while (isRunning)
         {
+            obstacleManager.addObstacle();
             obstacleManager.moveObstacles(screenBuffer);
 
             if (Console.KeyAvailable)
