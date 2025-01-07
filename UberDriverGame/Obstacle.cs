@@ -42,7 +42,7 @@ class Obstacle
             if (currentRow >= 0 && currentRow < Utilities.screenHeight)
             {
                 string carPart = this.carObstacleParts[i];
-                carObstacleBuffer.xPos = Environment.getLaneOffsets()[currentLane - 1];
+                carObstacleBuffer.xPos = Environment.getLanePositions()[currentLane - 1];
                 carObstacleBuffer.yPos = currentRow;
                 carObstacleBuffer.text = carPart;
 

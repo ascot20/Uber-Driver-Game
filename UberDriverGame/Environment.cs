@@ -4,6 +4,7 @@
     private const char roadStrip = '║';
     private const int lanePadding = 5;
     private const int laneSpacing = 20;
+    private const int laneMultiplier = 2;
 
     public Environment(ScreenBuffer screenBuffer)
     {
@@ -11,25 +12,25 @@
     }
 
     //returns targeted lane offsets
-    public static int[] getLaneOffsets()
+    public static int[] getLanePositions()
     {
-        int middleLaneOffset = Utilities.screenWidth / 2;
-        int[] laneOffsets = { middleLaneOffset - laneSpacing, middleLaneOffset, middleLaneOffset + laneSpacing,
-            middleLaneOffset + laneSpacing * 2 };
+        int middleLanePosition = Utilities.screenWidth / 2;
+        int[] lanePositions = { middleLanePosition - laneSpacing, middleLanePosition, middleLanePosition + laneSpacing,
+            middleLanePosition + laneSpacing * laneMultiplier };
 
-        return laneOffsets;
+        return lanePositions;
     }
 
     private void drawRoad(ScreenBuffer screenBuffer)
     {
-        int[] laneOffsets = getLaneOffsets();
+        int[] lanePositons = getLanePositions();
 
-        for (int i = 0; i < laneOffsets.Length; i++)
+        for (int i = 0; i < lanePositons.Length; i++)
         {
             for (int j = 0; j < Utilities.screenHeight; j++)
             {
                 BufferChar c;
-                c.xPos = laneOffsets[i] - lanePadding;
+                c.xPos = lanePositons[i] - lanePadding;
                 c.yPos = j;
                 c.character = roadStrip;
 
