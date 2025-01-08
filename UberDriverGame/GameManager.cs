@@ -3,6 +3,10 @@ using System.Threading;
 
 class GameManager
 {
+    //constants
+    const int collisionOffset = -1;
+
+    //fields
     int timeout = 50;
 
     public GameManager()
@@ -63,10 +67,30 @@ class GameManager
             }
 
             screenBuffer.renderToConsole();
+            if (checkForCollision(driver, obstacleManager))
+            {
+                isRunning = false;
+                Console.ReadKey();
+            }
 
             Thread.Sleep(timeout);
 
         }
+    }
+
+    public bool checkForCollision(Driver driver, ObstacleManager obstacleManager)
+    {
+        for (int i = 0; i < obstacleManager.obstacles.Count; i++)
+        {
+            Obstacle obstacle = obstacleManager.obstacles[i];
+
+            if (obstacle.currentLane == driver.currentLane &&
+                (obstacle.firstRowPosition + obstacle.carObstacleHeight + collisionOffset >= Utilities.screenHeight - driver.carHeight))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 }
 
