@@ -4,6 +4,7 @@
     const int defaultLane = 2;
     const int minLane = 1;
     const int maxLane = 3;
+    
     private const string car =
             "  .#████#.\r\n" +
             " .████████.\r\n" +
@@ -16,10 +17,11 @@
             " .=%████%=:\r\n" +
             " .%......%:\r\n" +
             " .#.    .#.\r\n" +
-            "  :%████%:\r\n";
+            "  :%████%:";
 
     //fields
     private string username;
+    public int carHeight = Utilities.getHeightOfString(car);
     public int currentLane;
     private BufferString carBuffer;
 
@@ -61,6 +63,7 @@
         this.carBuffer = Utilities.createBottomCenteredBufferString(car);
 
         this.carBuffer.xPos = Environment.getLanePositions()[this.currentLane - 1];
+        
         screenBuffer.writeLines(this.carBuffer);
     }
 }

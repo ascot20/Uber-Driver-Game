@@ -4,6 +4,7 @@ class ScreenBuffer
 {
     //constants
     const char spaceCharacter = ' ';
+    const string separator = "\n";
 
     //fields
     private int width;
@@ -87,7 +88,7 @@ class ScreenBuffer
     //write lines to 2D buffer array
     public void writeLines(BufferString stringText)
     {
-        string[] lines = stringText.text.Split("\n");
+        string[] lines = stringText.text.Split(separator);
         int stringHeight = lines.Length;
 
         for (int i = 0; i < stringHeight; i++)
@@ -104,7 +105,7 @@ class ScreenBuffer
     //clear lines from 2D buffer array
     public void clearLines(BufferString stringText)
     {
-        string[] lines = stringText.text.Split("\n");
+        string[] lines = stringText.text.Split(separator);
         int stringHeight = lines.Length;
 
         for (int i = 0; i < stringHeight; i++)

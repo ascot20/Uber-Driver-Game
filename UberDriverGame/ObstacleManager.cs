@@ -3,12 +3,11 @@
 class ObstacleManager
 {
     //constants
-    const string separator = "\r\n";
     private const string carObstacle =
         " .#████████#.\r\n" +
         " .██████████.\r\n" +
-        " .#       ##.\r\n" +
-        ".:#####%@@%#:.\r\n" +
+        " .#        #.\r\n" +
+        ".:##########:.\r\n" +
         " .  ██████  .\r\n" +
         " .%#██████#%.\r\n" +
         " .  ██████  .\r\n" +
@@ -17,7 +16,7 @@ class ObstacleManager
         " .%%      %%.\r\n" +
         " .%%      %%.\r\n" +
         " .#        #.\r\n" +
-        " .=+------+=.\r\n";
+        " .=+------+=.";
     private const int spacingMultiplier = 2;
 
     //fields
@@ -26,7 +25,7 @@ class ObstacleManager
 
     public ObstacleManager()
     {
-        this.firstObstacleStartingRow = -carObstacle.Split(separator).Length;
+        this.firstObstacleStartingRow = -Utilities.getHeightOfString(carObstacle);
         this.obstacles = new List<Obstacle>();
 
     }

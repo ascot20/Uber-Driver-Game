@@ -19,7 +19,7 @@ class Utilities
     public static BufferString createBottomCenteredBufferString(string text)
     {
         int textWidth = text.Length;
-        int textHeight = text.Split(separator).Length;
+        int textHeight = getHeightOfString(text);
 
         BufferString s;
         s.xPos = Console.WindowWidth - textWidth / 2;
@@ -78,6 +78,11 @@ class Utilities
 
         screenWidth = currentWindowWidth;
         screenHeight = currentWindowHeight;
+    }
+
+    public static int getHeightOfString(string text) 
+    {
+        return text.Split(separator).Length;
     }
 }
 
