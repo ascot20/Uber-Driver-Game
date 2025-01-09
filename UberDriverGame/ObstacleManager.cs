@@ -5,29 +5,28 @@ class ObstacleManager
     //constants
     private const string carObstacle =
         " .#████████#.\r\n" +
-        " .██████████.\r\n" +
-        " .#        #.\r\n" +
-        ".:##########:.\r\n" +
-        " .  ██████  .\r\n" +
-        " .%#██████#%.\r\n" +
-        " .  ██████  .\r\n" +
-        " .##########.\r\n" +
-        " .#        #.\r\n" +
-        " .%%      %%.\r\n" +
-        " .%%      %%.\r\n" +
-        " .#        #.\r\n" +
-        " .=+------+=.";
+        " |██████████|\r\n" +
+        " |          |\r\n" +
+        "_|__________|_\r\n" +
+        " |  ██████  |\r\n" +
+        " |__██████__|\r\n" +
+        " |  ██████  |\r\n" +
+        " |##______##|\r\n" +
+        " |█        █|\r\n" +
+        " |█        █|\r\n" +
+        " |█        █|\r\n" +
+        " |█        █|\r\n" +
+        " :#________#:";
     private const int spacingMultiplier = 2;
 
     //fields
-    public List<Obstacle> obstacles;
+    private List<Obstacle> obstacles;
     private int firstObstacleStartingRow;
 
     public ObstacleManager()
     {
         this.firstObstacleStartingRow = -Utilities.getHeightOfString(carObstacle);
         this.obstacles = new List<Obstacle>();
-
     }
 
     //add obstacle to list
@@ -51,7 +50,7 @@ class ObstacleManager
     //move obstacles
     public void moveObstacles(ScreenBuffer screenBuffer)
     {
-        for (int i = 0; i < this.obstacles.Count; i++)
+        for (int i = this.obstacles.Count - 1; i >= 0; i--)
         {
             //if obstacle has moved out of view then remove from list
             if (this.obstacles[i].firstRowPosition > Utilities.screenHeight)
@@ -63,6 +62,27 @@ class ObstacleManager
                 this.obstacles[i].moveObstacle(screenBuffer);
             }
         }
+    }
+
+    public bool checkForCollision(Driver driver)
+    {
+        for (int i = 0; i < this.obstacles.Count; i++)
+        {
+            Obstacle obstacle = this.obstacles[i];
+            // if obstacle is on the same lane and row position
+            if (
+                (obstacle.currentLane == driver.currentLane) && 
+                (obstacle.firstRowPosition + obstacle.carObstacleHeight > Utilities.screenHeight - driver.carHeight))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void clearObstacles()
+    {
+        this.obstacles.Clear();
     }
 
 }
