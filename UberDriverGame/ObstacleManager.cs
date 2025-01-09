@@ -15,7 +15,7 @@ class ObstacleManager
         " |█        █|\r\n" +
         " |█        █|\r\n" +
         " |█        █|\r\n" +
-        " |█        █|\r\n" +
+        " |█________█|\r\n" +
         " :#________#:";
     private const int spacingMultiplier = 2;
 
