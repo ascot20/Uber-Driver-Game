@@ -3,11 +3,8 @@ using System.Threading;
 
 class GameManager
 {
-    //constants
-    const int collisionOffset = -1;
-
     //fields
-    int timeout = 50;
+    int timeout = 40;
 
     public GameManager()
     {
@@ -18,28 +15,29 @@ class GameManager
 
         int optionSelected = GameMenus.displayStartMenu();
 
-        switch ((Option)optionSelected)
+        switch ((StartMenuOptions)optionSelected)
         {
-            case Option.NewGame:
+            case StartMenuOptions.NewGame:
                 string username = GameMenus.displayNewGameMenu();
-                ScreenBuffer screenBuffer = new ScreenBuffer(Utilities.screenWidth, Utilities.screenHeight);
-                Environment environment = new Environment(screenBuffer);
-                Driver driver = new Driver(username, screenBuffer);
-                handleInGameInput(driver, screenBuffer);
+                handleGamePlay(username);
                 break;
-            case Option.LoadGame:
+
+            case StartMenuOptions.LoadGame:
                 Console.WriteLine("Load game");
                 break;
-            case Option.Exit:
+
+            case StartMenuOptions.Exit:
                 Console.WriteLine("Exit game");
                 break;
         }
     }
 
 
-    private void handleInGameInput(Driver driver, ScreenBuffer screenBuffer)
+    private void handleGamePlay(string username)
     {
-
+        ScreenBuffer screenBuffer = new ScreenBuffer(Utilities.screenWidth, Utilities.screenHeight);
+        Environment environment = new Environment(screenBuffer);
+        Driver driver = new Driver(username, screenBuffer);
         ObstacleManager obstacleManager = new ObstacleManager();
 
         bool isRunning = true;
@@ -67,10 +65,21 @@ class GameManager
             }
 
             screenBuffer.renderToConsole();
-            if (checkForCollision(driver, obstacleManager))
+
+            if (obstacleManager.checkForCollision(driver))
             {
-                isRunning = false;
-                Console.ReadKey();
+                bool continueGame = GameMenus.displayCollisionMenu(screenBuffer);
+
+                if (continueGame) 
+                { 
+                    this.resetGame(driver,environment,screenBuffer,obstacleManager);
+                }
+
+                else
+                {
+                    isRunning = false;
+                }
+
             }
 
             Thread.Sleep(timeout);
@@ -78,26 +87,20 @@ class GameManager
         }
     }
 
-    public bool checkForCollision(Driver driver, ObstacleManager obstacleManager)
+    private void resetGame(Driver driver, Environment environment, ScreenBuffer screenBuffer, ObstacleManager obstacleManager)
     {
-        for (int i = 0; i < obstacleManager.obstacles.Count; i++)
-        {
-            Obstacle obstacle = obstacleManager.obstacles[i];
+        obstacleManager.clearObstacles();
+        screenBuffer.clearBuffer();
+        Console.Clear();
 
-            if (obstacle.currentLane == driver.currentLane &&
-                (obstacle.firstRowPosition + obstacle.carObstacleHeight + collisionOffset >= Utilities.screenHeight - driver.carHeight))
-            {
-                return true;
-            }
-        }
-        return false;
+        driver.deployCar(screenBuffer);
+        environment.drawEnvironment(screenBuffer);
     }
 }
 
-enum Option
+enum StartMenuOptions
 {
     NewGame = 0,
     LoadGame = 1,
     Exit = 2
 }
-
