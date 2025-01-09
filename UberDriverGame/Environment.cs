@@ -5,10 +5,11 @@
     private const int lanePadding = 5;
     private const int laneSpacing = 20;
     private const int laneMultiplier = 2;
+    const int firstRowPos = 0;
 
     public Environment(ScreenBuffer screenBuffer)
     {
-        this.drawRoad(screenBuffer);
+        this.drawEnvironment(screenBuffer);
     }
 
     //returns targeted lane offsets
@@ -19,6 +20,12 @@
             middleLanePosition + laneSpacing * laneMultiplier };
 
         return lanePositions;
+    }
+
+    public void drawEnvironment(ScreenBuffer screenBuffer)
+    {
+        this.drawRoad(screenBuffer);
+        this.writeGameInstructions(screenBuffer);
     }
 
     private void drawRoad(ScreenBuffer screenBuffer)
@@ -37,6 +44,12 @@
                 screenBuffer.writeChar(c);
             }
         }
+    }
+
+    private void writeGameInstructions(ScreenBuffer screenBuffer)
+    {
+        BufferString instructions = Utilities.createLeftAlignedBufferString("Use A and D to steer car left or right.", firstRowPos);
+        screenBuffer.writeLine(instructions);
     }
 }
 
