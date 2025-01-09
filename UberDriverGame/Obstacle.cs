@@ -53,7 +53,7 @@ class Obstacle
         this.firstRowPosition += 1;
     }
 
-    //clear buffers in buffer before every move
+    //clear carObstacleBuffers in buffer before every move
     private void clearObstacle(ScreenBuffer screenBuffer)
     {
         for (int i = 0; i < this.carObstacleBuffers.Count; i++)

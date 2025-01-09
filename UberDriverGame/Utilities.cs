@@ -7,6 +7,8 @@ class Utilities
     const int minWindowHeight = 40;
     const string clearScreenEscSeq = "\x1b[3J";
     const string separator = "\n";
+    const int firstColumnPos = 0;
+    
     public static int screenWidth;
     public static int screenHeight;
 
@@ -24,6 +26,30 @@ class Utilities
         BufferString s;
         s.xPos = Console.WindowWidth - textWidth / 2;
         s.yPos = Console.WindowHeight - textHeight;
+        s.text = text;
+
+        return s;
+    }
+
+    public static BufferString createRightAlignedBufferString(string text, int rowPosition)
+    {
+        int textWidth = text.Length;
+
+        BufferString s;
+        s.xPos = screenWidth - textWidth;
+        s.yPos = rowPosition;
+        s.text = text;
+
+        return s;
+    }
+
+    public static BufferString createLeftAlignedBufferString(string text, int rowPosition)
+    {
+        int textWidth = text.Length;
+
+        BufferString s;
+        s.xPos = firstColumnPos;
+        s.yPos = rowPosition;
         s.text = text;
 
         return s;
