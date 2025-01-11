@@ -22,8 +22,7 @@ class Driver
             " .#.    .#.\r\n" +
             "  :#████#:";
 
-    //fields
-    private string username;
+    public string username;
     public decimal totalEarnings;
     public int carHeight = Text.getHeightOfString(car);
     public int currentLane;
