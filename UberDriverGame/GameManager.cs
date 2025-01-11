@@ -4,8 +4,7 @@ using Utilities;
 
 class GameManager
 {
-    //fields
-    private int timeout = 35;
+    private int timeout = 15;
 
     public GameManager()
     {
@@ -37,6 +36,7 @@ class GameManager
     private void handleGamePlay(string username)
     {
         GameEnvironmentVariables gameEnvironmentVariables;
+
         gameEnvironmentVariables.screenBuffer = new ScreenBuffer(Screen.screenWidth, Screen.screenHeight);
         gameEnvironmentVariables.environment = new Environment(gameEnvironmentVariables.screenBuffer);
         gameEnvironmentVariables.driver = new Driver(username, gameEnvironmentVariables.screenBuffer);
@@ -106,6 +106,7 @@ class GameManager
                 this.resetGame(gameEnvironmentVariables);
                 return true;
             }
+
             else
             {
                 return false;
@@ -119,7 +120,7 @@ class GameManager
     {
         gameEnvironmentVariables.obstacleManager.clearObstacles();
         gameEnvironmentVariables.screenBuffer.clearBuffer();
-        Console.Clear();
+        Screen.clearConsole();
         
         gameEnvironmentVariables.driver.deployCar(gameEnvironmentVariables.screenBuffer);
         gameEnvironmentVariables.environment.drawEnvironment(gameEnvironmentVariables.screenBuffer);
