@@ -1,17 +1,18 @@
 ﻿using System;
 using System.Threading;
+using Utilities;
 
 class GameManager
 {
     //fields
-    int timeout = 40;
+    private int timeout = 35;
 
     public GameManager()
     {
 
         Console.CursorVisible = false;
 
-        Utilities.checkConsoleSize();
+        Screen.setupConsoleSize();
 
         int optionSelected = GameMenus.displayStartMenu();
 
@@ -35,72 +36,95 @@ class GameManager
 
     private void handleGamePlay(string username)
     {
-        ScreenBuffer screenBuffer = new ScreenBuffer(Utilities.screenWidth, Utilities.screenHeight);
-        Environment environment = new Environment(screenBuffer);
-        Driver driver = new Driver(username, screenBuffer);
-        ObstacleManager obstacleManager = new ObstacleManager();
+        GameEnvironmentVariables gameEnvironmentVariables;
+        gameEnvironmentVariables.screenBuffer = new ScreenBuffer(Screen.screenWidth, Screen.screenHeight);
+        gameEnvironmentVariables.environment = new Environment(gameEnvironmentVariables.screenBuffer);
+        gameEnvironmentVariables.driver = new Driver(username, gameEnvironmentVariables.screenBuffer);
+        gameEnvironmentVariables.obstacleManager = new ObstacleManager();
+        gameEnvironmentVariables.accountManager = new AccountManager(gameEnvironmentVariables.driver, gameEnvironmentVariables.screenBuffer);
 
         bool isRunning = true;
 
         while (isRunning)
         {
-            obstacleManager.addObstacle();
-            obstacleManager.moveObstacles(screenBuffer);
+            gameEnvironmentVariables.obstacleManager.addObstacle();
+            gameEnvironmentVariables.obstacleManager.moveObstacles(gameEnvironmentVariables.driver,
+                gameEnvironmentVariables.screenBuffer, gameEnvironmentVariables.accountManager);
 
-            if (Console.KeyAvailable)
-            {
-                ConsoleKey key = Console.ReadKey(true).Key;
-
-                switch (key)
-                {
-                    case ConsoleKey.A:
-                        driver.steerLeft(screenBuffer);
-                        break;
-
-                    case ConsoleKey.D:
-                        driver.steerRight(screenBuffer);
-                        break;
-
-                }
-            }
-
-            screenBuffer.renderToConsole();
-
-            if (obstacleManager.checkForCollision(driver))
-            {
-                bool continueGame = GameMenus.displayCollisionMenu(screenBuffer);
-
-                if (continueGame) 
-                { 
-                    this.resetGame(driver,environment,screenBuffer,obstacleManager);
-                }
-
-                else
-                {
-                    isRunning = false;
-                }
-
-            }
-
+            handleCarSteering(gameEnvironmentVariables);
+            handleRendering(gameEnvironmentVariables);
+            isRunning = continueGame(gameEnvironmentVariables);
+ 
             Thread.Sleep(timeout);
 
         }
     }
 
-    private void resetGame(Driver driver, Environment environment, ScreenBuffer screenBuffer, ObstacleManager obstacleManager)
+    private void handleRendering(GameEnvironmentVariables gameEnvironmentVariables)
     {
-        obstacleManager.clearObstacles();
-        screenBuffer.clearBuffer();
-        Console.Clear();
+        try
+        {
+            gameEnvironmentVariables.screenBuffer.renderToConsole();
+        }
+        catch
+        {
+            Screen.setupConsoleSize();
+            gameEnvironmentVariables.screenBuffer.setScreenBufferDimension(Screen.screenWidth, Screen.screenHeight);
+            resetGame(gameEnvironmentVariables);
+        }
+    }
 
-        driver.deployCar(screenBuffer);
-        environment.drawEnvironment(screenBuffer);
+    private void handleCarSteering(GameEnvironmentVariables gameEnvironmentVariables)
+    {
+        if (Console.KeyAvailable)
+        {
+            ConsoleKey key = Console.ReadKey(true).Key;
+
+            switch (key)
+            {
+                case ConsoleKey.A:
+                    gameEnvironmentVariables.driver.steerLeft(gameEnvironmentVariables.screenBuffer);
+                    break;
+
+                case ConsoleKey.D:
+                    gameEnvironmentVariables.driver.steerRight(gameEnvironmentVariables.screenBuffer);
+                    break;
+
+            }
+        }
+    }
+
+    private bool continueGame(GameEnvironmentVariables gameEnvironmentVariables)
+    {
+        if (gameEnvironmentVariables.obstacleManager.checkForCollision(gameEnvironmentVariables.driver))
+        {
+            gameEnvironmentVariables.accountManager.deductAccount(gameEnvironmentVariables.driver, gameEnvironmentVariables.screenBuffer);
+            bool continueGame = GameMenus.displayCollisionMenu(gameEnvironmentVariables.screenBuffer);
+
+            if (continueGame)
+            {
+                this.resetGame(gameEnvironmentVariables);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private void resetGame(GameEnvironmentVariables gameEnvironmentVariables)
+    {
+        gameEnvironmentVariables.obstacleManager.clearObstacles();
+        gameEnvironmentVariables.screenBuffer.clearBuffer();
+        Console.Clear();
+        
+        gameEnvironmentVariables.driver.deployCar(gameEnvironmentVariables.screenBuffer);
+        gameEnvironmentVariables.environment.drawEnvironment(gameEnvironmentVariables.screenBuffer);
+        gameEnvironmentVariables.accountManager.updateAccountDashboard(gameEnvironmentVariables.driver,
+            gameEnvironmentVariables.screenBuffer);
     }
 }
 
-enum StartMenuOptions
-{
-    NewGame = 0,
-    LoadGame = 1,
-    Exit = 2
-}
