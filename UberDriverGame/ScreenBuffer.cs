@@ -15,11 +15,16 @@ class ScreenBuffer
 
     public ScreenBuffer(int width, int height)
     {
-        this.width = width;
-        this.height = height;
-        this.buffer = new char[height, width];
-        this.previousBuffer = new char[height, width];
+        this.setScreenBufferDimension(width, height);
         this.clearBuffer();
+    }
+
+    public void setScreenBufferDimension(int screenWidth, int screenHeight)
+    {
+        this.width = screenWidth;
+        this.height = screenHeight;
+        this.buffer = new char[screenHeight, screenWidth];
+        this.previousBuffer = new char[screenHeight, screenWidth];
     }
 
     //initialize 2D buffer array with space character
@@ -128,25 +133,19 @@ class ScreenBuffer
             {
                 if (this.buffer[i,j] != this.previousBuffer[i, j])
                 {
-                    Console.SetCursorPosition(j,i);
-                    Console.Write(this.buffer[i,j]);
-                    this.previousBuffer[i,j] = this.buffer[i,j];
+                    try
+                    {
+                        Console.SetCursorPosition(j, i);
+                        Console.Write(this.buffer[i, j]);
+                        this.previousBuffer[i, j] = this.buffer[i, j];
+                    }
+                    catch (Exception e) 
+                    {
+                        throw new Exception(e.Message);
+                    }
+                    
                 }
             }
         }
     }
-}
-
-struct BufferChar
-{
-    public int xPos;
-    public int yPos;
-    public char character;
-}
-
-struct BufferString
-{
-    public int xPos;
-    public int yPos;
-    public string text;
 }
