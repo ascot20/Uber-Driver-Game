@@ -6,8 +6,9 @@ class AccountManager
 {
 
     private const int firstRowPos = 0;
-    private const int thirdRowPos = 2;
+    private const int secondRowPos = 1;
     private const int fourthRowPos = 3;
+    private const int fifthRowPos = 4;
     private const int minEarnings = 10;
     private const int maxEarnings = 100;
     private const int minCostOfRepairs = 200;
@@ -29,25 +30,29 @@ class AccountManager
 
     public void updateAccountDashboard(Driver driver, ScreenBuffer screenBuffer)
     {
+        string usernameDisplay = "Driver name: " + driver.username;
         decimal driverEarnings = driver.totalEarnings;
-        string driverDashboard;
+        string driverEarningsDisplay;
 
         if (driverEarnings < 0)
         {
-            driverDashboard = "Total Earnings: - £" + Math.Abs(driverEarnings) + ".00";
+            driverEarningsDisplay = "Total Earnings: - £" + Math.Abs(driverEarnings) + ".00";
         }
 
         else
         {
-            driverDashboard = "Total Earnings: £" + driver.totalEarnings + ".00";
+            driverEarningsDisplay = "Total Earnings: £" + driver.totalEarnings + ".00";
         }
 
         Text.clearBufferStrings(this.accountDashboardBuffers, screenBuffer);
 
-        BufferString s = Text.createRightAlignedBufferString(driverDashboard, firstRowPos);
-        screenBuffer.writeLine(s);
+        BufferString usernameDisplayBufferString = Text.createRightAlignedBufferString(usernameDisplay, firstRowPos);
+        BufferString earningDisplayBufferString = Text.createRightAlignedBufferString(driverEarningsDisplay, secondRowPos);
 
-        this.accountDashboardBuffers.Add(s);
+        screenBuffer.writeLine(usernameDisplayBufferString);
+        screenBuffer.writeLine(earningDisplayBufferString);
+
+        this.accountDashboardBuffers.Add(earningDisplayBufferString);
     }
 
     public void addEarnings(Driver driver, ScreenBuffer screenBuffer)
@@ -82,12 +87,12 @@ class AccountManager
             if (driver.totalEarnings < 0)
             {
                 borrowNotification = "- £" + Math.Abs(driver.totalEarnings) + ".00" + " borrowed from the bank for repairs.";
-                BufferString borrowNotificationBuffer = Text.createRightAlignedBufferString(borrowNotification, fourthRowPos);
+                BufferString borrowNotificationBuffer = Text.createRightAlignedBufferString(borrowNotification, fifthRowPos);
                 screenBuffer.writeLine(borrowNotificationBuffer);
                 this.transactionBuffers.Add(borrowNotificationBuffer);
             }
             transactionNotification = "- £" + deduction + ".00 " + " was used for repairs";
-            BufferString transactionNotificationBuffer = Text.createRightAlignedBufferString(transactionNotification, thirdRowPos);
+            BufferString transactionNotificationBuffer = Text.createRightAlignedBufferString(transactionNotification, fourthRowPos);
 
             screenBuffer.writeLine(transactionNotificationBuffer);
 
@@ -99,7 +104,7 @@ class AccountManager
             decimal earning = driver.totalEarnings - previousBalance;
             BufferString transactionNotivationBuffer;
             string transactionNotification = "+ £" + earning + ".00" + " added to your account for last ride.";
-            transactionNotivationBuffer = Text.createRightAlignedBufferString(transactionNotification, thirdRowPos);
+            transactionNotivationBuffer = Text.createRightAlignedBufferString(transactionNotification, fourthRowPos);
 
             screenBuffer.writeLine(transactionNotivationBuffer);
             this.transactionBuffers.Add(transactionNotivationBuffer);
