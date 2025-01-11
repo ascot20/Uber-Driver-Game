@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Utilities;
 
 class ObstacleManager
 {
@@ -25,7 +26,7 @@ class ObstacleManager
 
     public ObstacleManager()
     {
-        this.firstObstacleStartingRow = -Utilities.getHeightOfString(carObstacle);
+        this.firstObstacleStartingRow = -Text.getHeightOfString(carObstacle);
         this.obstacles = new List<Obstacle>();
     }
 
@@ -48,14 +49,15 @@ class ObstacleManager
     }
 
     //move obstacles
-    public void moveObstacles(ScreenBuffer screenBuffer)
+    public void moveObstacles(Driver driver, ScreenBuffer screenBuffer, AccountManager accountManager)
     {
         for (int i = this.obstacles.Count - 1; i >= 0; i--)
         {
             //if obstacle has moved out of view then remove from list
-            if (this.obstacles[i].firstRowPosition > Utilities.screenHeight)
+            if (this.obstacles[i].firstRowPosition > Screen.screenHeight)
             {
                 this.obstacles.RemoveAt(i);
+                accountManager.addEarnings(driver, screenBuffer);
             }
             else
             {
@@ -69,10 +71,11 @@ class ObstacleManager
         for (int i = 0; i < this.obstacles.Count; i++)
         {
             Obstacle obstacle = this.obstacles[i];
-            // if obstacle is on the same lane and row position
+
+            // if obstacle is on the same lane and row positions
             if (
                 (obstacle.currentLane == driver.currentLane) && 
-                (obstacle.firstRowPosition + obstacle.carObstacleHeight > Utilities.screenHeight - driver.carHeight))
+                (obstacle.firstRowPosition + obstacle.carObstacleHeight > Screen.screenHeight - driver.carHeight))
             {
                 return true;
             }
