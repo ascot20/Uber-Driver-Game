@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Utilities;
 
 class Obstacle
 {
@@ -39,12 +40,12 @@ class Obstacle
         {
             int currentRow = this.firstRowPosition + i;
 
-            if (currentRow >= 0 && currentRow < Utilities.screenHeight)
+            if (currentRow >= 0 && currentRow < Screen.screenHeight)
             {
-                string carPart = this.carObstacleParts[i];
-                carObstacleBuffer.xPos = Environment.getLanePositions()[currentLane - 1];
-                carObstacleBuffer.yPos = currentRow;
-                carObstacleBuffer.text = carPart;
+                string text = this.carObstacleParts[i];
+                int rowPosition = currentRow;
+                int columnPosition = Environment.getLanePositions()[currentLane - 1];
+                carObstacleBuffer = Text.createBufferString(text, rowPosition, columnPosition);
 
                 screenBuffer.writeLine(carObstacleBuffer);
                 this.carObstacleBuffers.Add(carObstacleBuffer);

@@ -1,4 +1,6 @@
-﻿class Driver
+﻿using Utilities;
+
+class Driver
 {
     //constants
     const int defaultLane = 2;
@@ -23,7 +25,7 @@
     //fields
     private string username;
     public decimal totalEarnings;
-    public int carHeight = Utilities.getHeightOfString(car);
+    public int carHeight = Text.getHeightOfString(car);
     public int currentLane;
     private BufferString carBuffer;
 
@@ -63,7 +65,7 @@
 
     private void updateCarPosition(ScreenBuffer screenBuffer)
     {
-        this.carBuffer = Utilities.createBottomCenteredBufferString(car);
+        this.carBuffer = Text.createBottomCenteredBufferString(car);
 
         this.carBuffer.xPos = Environment.getLanePositions()[this.currentLane - 1];
         this.carBuffer.yPos = this.carBuffer.yPos + bottomOffset;

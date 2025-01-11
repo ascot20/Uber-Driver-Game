@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Utilities;
 
 class GameMenus
 {
@@ -17,7 +18,7 @@ class GameMenus
                                     "╚██████╔╝██████╔╝███████╗██║  ██║    ██████╔╝██║  ██║██║ ╚████╔╝ ███████╗██║  ██║\r\n" +
                                     " ╚═════╝ ╚═════╝ ╚══════╝╚═╝  ╚═╝    ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═══╝  ╚══════╝╚═╝  ╚═╝\r\n";
 
-        Utilities.horCenterMultiLineString(gameTitleInASCII);
+        Text.alignCenter(gameTitleInASCII);
     }
 
 
@@ -33,23 +34,23 @@ class GameMenus
         {
             drawGameTitle();
 
-            Utilities.horCenterMultiLineString("Use Up or Down arrow key to select option.\n");
+            Text.alignCenter("Use Up or Down arrow key to select option.\n");
             for (int i = 0; i < menuOptionLength; i++)
             {
                 if (i == selectedOptionIndex)
                 {
-                    Utilities.horCenterMultiLineString(menuOption[i] + selector);
+                    Text.alignCenter(menuOption[i] + selector);
                 }
                 else
                 {
-                    Utilities.horCenterMultiLineString(menuOption[i]);
+                    Text.alignCenter(menuOption[i]);
                 }
 
                 Console.WriteLine();
             }
 
             key = Console.ReadKey(true).Key;
-            Utilities.checkConsoleSize();
+            Screen.setupConsoleSize();
 
             if (key == ConsoleKey.UpArrow)
             {
@@ -61,6 +62,7 @@ class GameMenus
                 selectedOptionIndex = (selectedOptionIndex + 1) % menuOptionLength;
             }
 
+            Screen.clearConsole();
         } while (key != ConsoleKey.Enter);
 
         return selectedOptionIndex;
@@ -75,10 +77,11 @@ class GameMenus
         {
             drawGameTitle();
 
-            Utilities.horCenterString("Enter driver name: ");
+            Text.alignCenter("Enter driver name: ");
 
             username = Console.ReadLine();
-            Utilities.checkConsoleSize();
+            Screen.setupConsoleSize();
+            Screen.clearConsole();
 
         } while (string.IsNullOrWhiteSpace(username));
 
@@ -89,8 +92,8 @@ class GameMenus
 
     public static bool displayCollisionMenu(ScreenBuffer screenBuffer)
     {
-        BufferString crushMessage = Utilities.createLeftAlignedBufferString("You crushed. £10 was used for repairs.", thirdRow);
-        BufferString continueMessage = Utilities.createLeftAlignedBufferString("Ride again(Y/N)?", fourthRow);
+        BufferString crushMessage = Text.createLeftAlignedBufferString("You crushed.", thirdRow);
+        BufferString continueMessage = Text.createLeftAlignedBufferString("Ride again(Y/N)?", fourthRow);
 
         screenBuffer.writeLines(crushMessage);
         screenBuffer.writeLines(continueMessage);

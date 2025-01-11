@@ -1,7 +1,9 @@
-﻿class Environment
+﻿using Utilities;
+
+class Environment
 {
     //constants
-    private const char roadStrip = '║';
+    private const char roadBorder = '║';
     private const int lanePadding = 5;
     private const int laneSpacing = 20;
     private const int laneMultiplier = 2;
@@ -15,7 +17,7 @@
     //returns targeted lane offsets
     public static int[] getLanePositions()
     {
-        int middleLanePosition = Utilities.screenWidth / 2;
+        int middleLanePosition = Screen.screenWidth / 2;
         int[] lanePositions = { middleLanePosition - laneSpacing, middleLanePosition, middleLanePosition + laneSpacing,
             middleLanePosition + laneSpacing * laneMultiplier };
 
@@ -34,22 +36,20 @@
 
         for (int i = 0; i < lanePositons.Length; i++)
         {
-            for (int j = 0; j < Utilities.screenHeight; j++)
+            for (int j = 0; j < Screen.screenHeight; j++)
             {
-                BufferChar c;
-                c.xPos = lanePositons[i] - lanePadding;
-                c.yPos = j;
-                c.character = roadStrip;
+                int rowPosition = j;
+                int columnPosition = lanePositons[i] - lanePadding;
 
-                screenBuffer.writeChar(c);
+                screenBuffer.writeChar(Text.createBufferChar(roadBorder, rowPosition, columnPosition));
             }
         }
     }
 
     private void writeGameInstructions(ScreenBuffer screenBuffer)
     {
-        BufferString instructions = Utilities.createLeftAlignedBufferString("Use A and D to steer car left or right.", firstRowPos);
-        screenBuffer.writeLine(instructions);
+        string instructions = "Use A and D to steer car left or right.";
+        screenBuffer.writeLine(Text.createLeftAlignedBufferString(instructions, firstRowPos));
     }
 }
 
