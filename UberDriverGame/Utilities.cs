@@ -1,18 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Text.Json;
 
 namespace Utilities
 {
     class Screen
     {
-        private const int minWindowWidth = 170;
-        private const int minWindowHeight = 40;
-        const string clearScreenEscSeq = "\x1b[3J";
+        private const string clearScreenEscSeq = "\x1b[3J";
 
         public static int screenWidth;
         public static int screenHeight;
 
-        public static void setupConsoleSize()
+        public static void setupConsoleSize(int minWindowWidth, int minWindowHeight)
         {
             int currentWindowWidth = Console.WindowWidth;
             int currentWindowHeight = Console.WindowHeight;
@@ -201,6 +201,40 @@ namespace Utilities
                 screenBuffer.clearLine(bufferStrings[i]);
             }
             bufferStrings.Clear();
+        }
+    }
+
+    class FileHelper
+    {
+        public static void SaveData<T>(T data, string filePath)
+        {
+            StreamWriter outputFile = new StreamWriter(filePath);
+
+            string jsonText = JsonSerializer.Serialize(data);
+
+            outputFile.Write(jsonText);
+
+            outputFile.Close();
+        }
+
+        public static T LoadData<T>(string filePath)
+        {
+            try
+            {
+                StreamReader inputFile = new StreamReader(filePath);
+                string jsonText = inputFile.ReadLine();
+                inputFile.Close();
+
+                T data = JsonSerializer.Deserialize<T>(jsonText);
+
+                return data;
+            }
+
+            catch
+            {
+                throw new Exception("No data");
+            }
+          
         }
     }
 }

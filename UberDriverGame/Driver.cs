@@ -1,13 +1,11 @@
-﻿using Utilities;
+﻿using System.Text.Json.Serialization;
+using Utilities;
 
 class Driver
 {
-    //constants
-    const int defaultLane = 2;
-    const int minLane = 1;
-    const int maxLane = 3;
-    const int bottomOffset = -1;
-
+    private const int minLane = 1;
+    private const int maxLane = 3;
+    private const int defaultStartingLane = 2;
     private const string car =
             "  .#████#.\r\n" +
             " |████████|\r\n" +
@@ -22,18 +20,30 @@ class Driver
             " .#.    .#.\r\n" +
             "  :#████#:";
 
-    public string username;
-    public decimal totalEarnings;
+    [JsonInclude] public string username;
+    [JsonInclude] public decimal totalEarnings;
+    [JsonInclude] public int currentLane;
     public int carHeight = Text.getHeightOfString(car);
-    public int currentLane;
     private BufferString carBuffer;
 
-    public Driver(string username, ScreenBuffer screenBuffer)
+    public Driver()
+    {
+    }
+
+    public Driver(string username, int startingLane)
     {
         this.username = username;
         this.totalEarnings = 0;
-        this.currentLane = defaultLane;
-        this.deployCar(screenBuffer);
+
+        if (startingLane < minLane || startingLane > maxLane) 
+        {
+            this.currentLane = defaultStartingLane;
+        }
+        else
+        {
+            this.currentLane = startingLane;
+        }
+        
     }
 
     public void deployCar(ScreenBuffer screenBuffer)
@@ -67,7 +77,6 @@ class Driver
         this.carBuffer = Text.createBottomCenteredBufferString(car);
 
         this.carBuffer.xPos = Environment.getLanePositions()[this.currentLane - 1];
-        this.carBuffer.yPos = this.carBuffer.yPos + bottomOffset;
 
         screenBuffer.writeLines(this.carBuffer);
     }

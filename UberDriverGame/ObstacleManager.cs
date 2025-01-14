@@ -4,6 +4,8 @@ using Utilities;
 class ObstacleManager
 {
     //constants
+    private const int overlapOffset = -1;
+    private const int firstObstacleIndex = 0;
     private const string carObstacle =
         " .#████████#.\r\n" +
         " |██████████|\r\n" +
@@ -68,17 +70,14 @@ class ObstacleManager
 
     public bool checkForCollision(Driver driver)
     {
-        for (int i = 0; i < this.obstacles.Count; i++)
-        {
-            Obstacle obstacle = this.obstacles[i];
+        Obstacle obstacle = this.obstacles[firstObstacleIndex];
 
-            // if obstacle is on the same lane and row positions
-            if (
-                (obstacle.currentLane == driver.currentLane) && 
-                (obstacle.firstRowPosition + obstacle.carObstacleHeight > Screen.screenHeight - driver.carHeight))
-            {
-                return true;
-            }
+        // if obstacle is on the same lane and row positions of driver
+        if (
+            (obstacle.currentLane == driver.currentLane) &&
+            (obstacle.firstRowPosition + obstacle.carObstacleHeight + overlapOffset > Screen.screenHeight - driver.carHeight))
+        {
+            return true;
         }
         return false;
     }

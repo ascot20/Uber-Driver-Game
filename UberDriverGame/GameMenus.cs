@@ -22,7 +22,7 @@ class GameMenus
     }
 
 
-    public static int displayStartMenu()
+    public static int displayStartMenu(int minWindowWidth, int minWindowHeight)
     {
         List<string> menuOption = new List<string> { "New Game", "Load Game", "Exit" };
 
@@ -50,7 +50,7 @@ class GameMenus
             }
 
             key = Console.ReadKey(true).Key;
-            Screen.setupConsoleSize();
+            Screen.setupConsoleSize(minWindowWidth, minWindowHeight);
 
             if (key == ConsoleKey.UpArrow)
             {
@@ -68,7 +68,7 @@ class GameMenus
         return selectedOptionIndex;
     }
 
-    public static string displayNewGameMenu()
+    public static string displayNewGameMenu(int minWindowWidth, int minWindowHeight)
     {
         Console.CursorVisible = true;
         string username;
@@ -80,7 +80,7 @@ class GameMenus
             Text.alignCenter("Enter driver name: ");
 
             username = Console.ReadLine();
-            Screen.setupConsoleSize();
+            Screen.setupConsoleSize(minWindowWidth, minWindowHeight);
             Screen.clearConsole();
 
         } while (string.IsNullOrWhiteSpace(username));
@@ -95,8 +95,8 @@ class GameMenus
         BufferString crushMessage = Text.createLeftAlignedBufferString("You crushed.", thirdRow);
         BufferString continueMessage = Text.createLeftAlignedBufferString("Ride again(Y/N)?", fourthRow);
 
-        screenBuffer.writeLines(crushMessage);
-        screenBuffer.writeLines(continueMessage);
+        screenBuffer.writeLine(crushMessage);
+        screenBuffer.writeLine(continueMessage);
         screenBuffer.renderToConsole();
 
         ConsoleKey key;

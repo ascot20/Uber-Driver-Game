@@ -4,7 +4,6 @@ using Utilities;
 
 class AccountManager
 {
-
     private const int firstRowPos = 0;
     private const int secondRowPos = 1;
     private const int fourthRowPos = 3;
@@ -86,7 +85,7 @@ class AccountManager
 
             if (driver.totalEarnings < 0)
             {
-                borrowNotification = "- £" + Math.Abs(driver.totalEarnings) + ".00" + " borrowed from the bank for repairs.";
+                borrowNotification = "- £" + Math.Abs(driver.totalEarnings) + ".00" + " borrowed from the bank for repairs";
                 BufferString borrowNotificationBuffer = Text.createRightAlignedBufferString(borrowNotification, fifthRowPos);
                 screenBuffer.writeLine(borrowNotificationBuffer);
                 this.transactionBuffers.Add(borrowNotificationBuffer);
@@ -99,11 +98,12 @@ class AccountManager
             this.transactionBuffers.Add(transactionNotificationBuffer);
 
         }
+
         else
         {
             decimal earning = driver.totalEarnings - previousBalance;
             BufferString transactionNotivationBuffer;
-            string transactionNotification = "+ £" + earning + ".00" + " added to your account for last ride.";
+            string transactionNotification = "+ £" + earning + ".00" + " added to your account for last ride";
             transactionNotivationBuffer = Text.createRightAlignedBufferString(transactionNotification, fourthRowPos);
 
             screenBuffer.writeLine(transactionNotivationBuffer);

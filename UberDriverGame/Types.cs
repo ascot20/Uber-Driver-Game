@@ -5,6 +5,11 @@
     Exit = 2
 }
 
+enum configKeys
+{
+    StartingLane
+}
+
 struct GameEnvironmentVariables
 {
     public Driver driver;

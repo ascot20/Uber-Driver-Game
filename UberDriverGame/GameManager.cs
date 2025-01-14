@@ -1,62 +1,113 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading;
 using Utilities;
 
 class GameManager
 {
-    private int timeout = 15;
+    private const int minWindowWidth = 170;
+    private const int minWindowHeight = 40;
+    private const int defaultStartingLane = 2;
+
+    private const int timeout = 33;
+    private const string savedGamesFile = "Saved Games.json";
+    private const string configFile = "config.json";
 
     public GameManager()
     {
-
         Console.CursorVisible = false;
 
-        Screen.setupConsoleSize();
+        Screen.setupConsoleSize(minWindowWidth, minWindowHeight);
 
-        int optionSelected = GameMenus.displayStartMenu();
+        int optionSelected = GameMenus.displayStartMenu(minWindowWidth, minWindowHeight);
 
         switch ((StartMenuOptions)optionSelected)
         {
             case StartMenuOptions.NewGame:
-                string username = GameMenus.displayNewGameMenu();
-                handleGamePlay(username);
+                this.loadNewGame();
                 break;
 
             case StartMenuOptions.LoadGame:
-                Console.WriteLine("Load game");
+                this.loadSavedGame();
                 break;
 
             case StartMenuOptions.Exit:
-                Console.WriteLine("Exit game");
                 break;
         }
     }
 
+    private Dictionary<string, int> loadConfig()
+    {
+        try
+        {
+            Dictionary<string, int> config = FileHelper.LoadData<Dictionary<string, int>>(configFile);
+            return config;
+        }
+        catch
+        {
+            Dictionary<string,int> config = new Dictionary<string,int>();
+            config[configKeys.StartingLane.ToString()] = defaultStartingLane;
+            FileHelper.SaveData(config,configFile);
 
-    private void handleGamePlay(string username)
+            return config;
+        }
+    }
+
+    private void loadNewGame()
+    {
+        string username = GameMenus.displayNewGameMenu(minWindowWidth, minWindowHeight);
+        Driver driver = new Driver(username, loadConfig()[configKeys.StartingLane.ToString()]);
+        this.handleGamePlay(driver);
+    }
+
+    private void loadSavedGame()
+    {
+        try
+        {
+            Driver driver = FileHelper.LoadData<Driver>(savedGamesFile);
+            this.handleGamePlay(driver);
+        }
+        catch
+        {
+            this.loadNewGame();
+        }
+    }
+
+    private void handleGamePlay(Driver driver)
     {
         GameEnvironmentVariables gameEnvironmentVariables;
 
         gameEnvironmentVariables.screenBuffer = new ScreenBuffer(Screen.screenWidth, Screen.screenHeight);
         gameEnvironmentVariables.environment = new Environment(gameEnvironmentVariables.screenBuffer);
-        gameEnvironmentVariables.driver = new Driver(username, gameEnvironmentVariables.screenBuffer);
+        gameEnvironmentVariables.driver = driver;
         gameEnvironmentVariables.obstacleManager = new ObstacleManager();
         gameEnvironmentVariables.accountManager = new AccountManager(gameEnvironmentVariables.driver, gameEnvironmentVariables.screenBuffer);
+
+        gameEnvironmentVariables.driver.deployCar(gameEnvironmentVariables.screenBuffer);
+
+        Stopwatch stopwatch = new Stopwatch();
 
         bool isRunning = true;
 
         while (isRunning)
         {
+            stopwatch.Restart();
+
             gameEnvironmentVariables.obstacleManager.addObstacle();
             gameEnvironmentVariables.obstacleManager.moveObstacles(gameEnvironmentVariables.driver,
                 gameEnvironmentVariables.screenBuffer, gameEnvironmentVariables.accountManager);
 
-            handleCarSteering(gameEnvironmentVariables);
-            handleRendering(gameEnvironmentVariables);
+            this.handleCarSteering(gameEnvironmentVariables);
+            this.handleRendering(gameEnvironmentVariables);
             isRunning = continueGame(gameEnvironmentVariables);
- 
-            Thread.Sleep(timeout);
 
+            TimeSpan timeElapsed = stopwatch.Elapsed;
+
+            if (timeElapsed.Milliseconds < timeout)
+            {
+                Thread.Sleep(timeout - timeElapsed.Milliseconds);
+            }
         }
     }
 
@@ -68,7 +119,7 @@ class GameManager
         }
         catch
         {
-            Screen.setupConsoleSize();
+            Screen.setupConsoleSize(minWindowWidth, minWindowHeight);
             gameEnvironmentVariables.screenBuffer.setScreenBufferDimension(Screen.screenWidth, Screen.screenHeight);
             resetGame(gameEnvironmentVariables);
         }
@@ -101,9 +152,12 @@ class GameManager
             gameEnvironmentVariables.accountManager.deductAccount(gameEnvironmentVariables.driver, gameEnvironmentVariables.screenBuffer);
             bool continueGame = GameMenus.displayCollisionMenu(gameEnvironmentVariables.screenBuffer);
 
+            FileHelper.SaveData(gameEnvironmentVariables.driver, savedGamesFile);
+
             if (continueGame)
             {
                 this.resetGame(gameEnvironmentVariables);
+
                 return true;
             }
 
@@ -121,11 +175,9 @@ class GameManager
         gameEnvironmentVariables.obstacleManager.clearObstacles();
         gameEnvironmentVariables.screenBuffer.clearBuffer();
         Screen.clearConsole();
-        
+
         gameEnvironmentVariables.driver.deployCar(gameEnvironmentVariables.screenBuffer);
         gameEnvironmentVariables.environment.drawEnvironment(gameEnvironmentVariables.screenBuffer);
-        gameEnvironmentVariables.accountManager.updateAccountDashboard(gameEnvironmentVariables.driver,
-            gameEnvironmentVariables.screenBuffer);
+        gameEnvironmentVariables.accountManager.updateAccountDashboard(gameEnvironmentVariables.driver, gameEnvironmentVariables.screenBuffer);
     }
 }
-
