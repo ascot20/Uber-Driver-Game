@@ -42,11 +42,14 @@ class ObstacleManager
 
         else
         {
-            Obstacle previousObstacle = this.obstacles[this.obstacles.Count - 1];
-            int previousObstacleRow = previousObstacle.firstRowPosition;
-            int ObstacleStartingRowPos = previousObstacle.firstRowPosition - (previousObstacle.carObstacleHeight * spacingMultiplier);
+            if (obstacles.Count < 5)
+            {
+                Obstacle previousObstacle = this.obstacles[this.obstacles.Count - 1];
+                int previousObstacleRow = previousObstacle.firstRowPosition;
+                int ObstacleStartingRowPos = previousObstacle.firstRowPosition - (previousObstacle.carObstacleHeight * spacingMultiplier);
 
-            this.obstacles.Add(new Obstacle(carObstacle, ObstacleStartingRowPos));
+                this.obstacles.Add(new Obstacle(carObstacle, ObstacleStartingRowPos));
+            }
         }
     }
 
