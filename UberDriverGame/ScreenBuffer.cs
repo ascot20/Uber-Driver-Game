@@ -2,17 +2,14 @@
 
 class ScreenBuffer
 {
-    //constants
     const char spaceCharacter = ' ';
     const string separator = "\n";
 
-    //fields
     private int width;
     private int height;
     private char[,] buffer;
     private char[,] previousBuffer;
     
-
     public ScreenBuffer(int width, int height)
     {
         this.setScreenBufferDimension(width, height);

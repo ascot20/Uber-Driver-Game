@@ -24,7 +24,7 @@ class AccountManager
         this.previousBalance = driver.totalEarnings;
         this.accountDashboardBuffers = new List<BufferString>();
         this.transactionBuffers = new List<BufferString>();
-        updateAccountDashboard(driver, screenBuffer);
+        this.updateAccountDashboard(driver, screenBuffer);
     }
 
     public void updateAccountDashboard(Driver driver, ScreenBuffer screenBuffer)
@@ -77,6 +77,8 @@ class AccountManager
     private void showTransaction(Driver driver, ScreenBuffer screenBuffer)
     {
         Text.clearBufferStrings(this.transactionBuffers, screenBuffer);
+
+        //This is true if there is a collision
         if (previousBalance > driver.totalEarnings)
         {
             decimal deduction = this.previousBalance - driver.totalEarnings;
@@ -87,9 +89,12 @@ class AccountManager
             {
                 borrowNotification = "- £" + Math.Abs(driver.totalEarnings) + ".00" + " borrowed from the bank for repairs";
                 BufferString borrowNotificationBuffer = Text.createRightAlignedBufferString(borrowNotification, fifthRowPos);
+
                 screenBuffer.writeLine(borrowNotificationBuffer);
+
                 this.transactionBuffers.Add(borrowNotificationBuffer);
             }
+
             transactionNotification = "- £" + deduction + ".00 " + " was used for repairs";
             BufferString transactionNotificationBuffer = Text.createRightAlignedBufferString(transactionNotification, fourthRowPos);
 
@@ -102,11 +107,12 @@ class AccountManager
         else
         {
             decimal earning = driver.totalEarnings - previousBalance;
-            BufferString transactionNotivationBuffer;
+
             string transactionNotification = "+ £" + earning + ".00" + " added to your account for last ride";
-            transactionNotivationBuffer = Text.createRightAlignedBufferString(transactionNotification, fourthRowPos);
+            BufferString transactionNotivationBuffer = Text.createRightAlignedBufferString(transactionNotification, fourthRowPos);
 
             screenBuffer.writeLine(transactionNotivationBuffer);
+
             this.transactionBuffers.Add(transactionNotivationBuffer);
         }
     }

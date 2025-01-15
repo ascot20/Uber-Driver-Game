@@ -3,7 +3,6 @@ using Utilities;
 
 class ObstacleManager
 {
-    //constants
     private const int overlapOffset = -1;
     private const int firstObstacleIndex = 0;
     private const string carObstacle =
@@ -21,8 +20,8 @@ class ObstacleManager
         " |█________█|\r\n" +
         " :#________#:";
     private const int spacingMultiplier = 2;
+    private const int maxObstacles = 5;
 
-    //fields
     private List<Obstacle> obstacles;
     private int firstObstacleStartingRow;
 
@@ -32,7 +31,6 @@ class ObstacleManager
         this.obstacles = new List<Obstacle>();
     }
 
-    //add obstacle to list
     public void addObstacle()
     {
         if (this.obstacles.Count == 0)
@@ -42,7 +40,7 @@ class ObstacleManager
 
         else
         {
-            if (obstacles.Count < 5)
+            if (obstacles.Count < maxObstacles)
             {
                 Obstacle previousObstacle = this.obstacles[this.obstacles.Count - 1];
                 int previousObstacleRow = previousObstacle.firstRowPosition;
@@ -53,7 +51,6 @@ class ObstacleManager
         }
     }
 
-    //move obstacles
     public void moveObstacles(Driver driver, ScreenBuffer screenBuffer, AccountManager accountManager)
     {
         for (int i = this.obstacles.Count - 1; i >= 0; i--)
@@ -73,6 +70,11 @@ class ObstacleManager
 
     public bool checkForCollision(Driver driver)
     {
+        if(obstacles.Count == 0)
+        {
+            return false;
+        }
+
         Obstacle obstacle = this.obstacles[firstObstacleIndex];
 
         // if obstacle is on the same lane and row positions of driver

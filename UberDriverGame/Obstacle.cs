@@ -4,12 +4,10 @@ using Utilities;
 
 class Obstacle
 {
-    //constants
     private const string separator = "\r\n";
     private const int minLane = 1;
     private const int maxLane = 3;
 
-    //fields
     private string carObstacle;
     private string[] carObstacleParts;
     public int carObstacleHeight;
@@ -34,8 +32,6 @@ class Obstacle
     {
         this.clearObstacle(screenBuffer);
 
-        BufferString carObstacleBuffer;
-
         for (int i = 0; i < this.carObstacleHeight; i++)
         {
             int currentRow = this.firstRowPosition + i;
@@ -43,14 +39,18 @@ class Obstacle
             if (currentRow >= 0 && currentRow < Screen.screenHeight)
             {
                 string text = this.carObstacleParts[i];
+
                 int rowPosition = currentRow;
                 int columnPosition = Environment.getLanePositions()[currentLane - 1];
-                carObstacleBuffer = Text.createBufferString(text, rowPosition, columnPosition);
+
+                BufferString carObstacleBuffer = Text.createBufferString(text, rowPosition, columnPosition);
 
                 screenBuffer.writeLine(carObstacleBuffer);
+
                 this.carObstacleBuffers.Add(carObstacleBuffer);
             }
         }
+
         this.firstRowPosition += 1;
     }
 
@@ -61,6 +61,7 @@ class Obstacle
         {
             screenBuffer.clearLine(this.carObstacleBuffers[i]);
         }
+
         this.carObstacleBuffers.Clear();
     }
 }

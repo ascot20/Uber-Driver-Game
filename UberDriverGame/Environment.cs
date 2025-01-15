@@ -2,19 +2,18 @@
 
 class Environment
 {
-    //constants
     private const char roadBorder = '║';
     private const int lanePadding = 5;
     private const int laneSpacing = 20;
     private const int laneMultiplier = 2;
-    const int firstRowPos = 0;
+    private const int firstRowPos = 0;
 
     public Environment(ScreenBuffer screenBuffer)
     {
         this.drawEnvironment(screenBuffer);
     }
 
-    //returns targeted lane offsets
+    //get targeted lane positions
     public static int[] getLanePositions()
     {
         int middleLanePosition = Screen.screenWidth / 2;

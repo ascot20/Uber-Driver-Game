@@ -59,7 +59,6 @@ class Driver
             this.currentLane -= 1;
             this.updateCarPosition(screenBuffer);
         }
-
     }
 
     public void steerRight(ScreenBuffer screenBuffer)

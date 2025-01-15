@@ -9,7 +9,6 @@ class GameManager
     private const int minWindowWidth = 170;
     private const int minWindowHeight = 40;
     private const int defaultStartingLane = 2;
-
     private const int timeout = 33;
     private const string savedGamesFile = "Saved Games.json";
     private const string configFile = "config.json";
@@ -46,6 +45,7 @@ class GameManager
         }
         catch
         {
+            //create new config file if an error is encountered
             Dictionary<string,int> config = new Dictionary<string,int>();
             config[configKeys.StartingLane.ToString()] = defaultStartingLane;
             FileHelper.SaveData(config,configFile);
@@ -57,7 +57,7 @@ class GameManager
     private void loadNewGame()
     {
         string username = GameMenus.displayNewGameMenu(minWindowWidth, minWindowHeight);
-        Driver driver = new Driver(username, loadConfig()[configKeys.StartingLane.ToString()]);
+        Driver driver = new Driver(username, this.loadConfig()[configKeys.StartingLane.ToString()]);
         this.handleGamePlay(driver);
     }
 
@@ -70,6 +70,7 @@ class GameManager
         }
         catch
         {
+            //Load new game if no data in saved game file
             this.loadNewGame();
         }
     }

@@ -4,29 +4,28 @@ using Utilities;
 
 class GameMenus
 {
-    //constants
-    const string selector = " <--";
-    const int thirdRow = 2;
-    const int fourthRow = 3;
-
-    private static void drawGameTitle()
-    {
-        string gameTitleInASCII = "██╗   ██╗██████╗ ███████╗██████╗     ██████╗ ██████╗ ██╗██╗   ██╗███████╗██████╗ \r\n" +
+    private const string selector = " <--";
+    private const int thirdRow = 2;
+    private const int fourthRow = 3;
+    private const string gameTitleInASCII = 
+                                    "██╗   ██╗██████╗ ███████╗██████╗     ██████╗ ██████╗ ██╗██╗   ██╗███████╗██████╗ \r\n" +
                                     "██║   ██║██╔══██╗██╔════╝██╔══██╗    ██╔══██╗██╔══██╗██║██║   ██║██╔════╝██╔══██╗\r\n" +
                                     "██║   ██║██████╔╝█████╗  ██████╔╝    ██║  ██║██████╔╝██║██║   ██║█████╗  ██████╔╝\r\n" +
                                     "██║   ██║██╔══██╗██╔══╝  ██╔══██╗    ██║  ██║██╔══██╗██║╚██╗ ██╔╝██╔══╝  ██╔══██╗\r\n" +
                                     "╚██████╔╝██████╔╝███████╗██║  ██║    ██████╔╝██║  ██║██║ ╚████╔╝ ███████╗██║  ██║\r\n" +
                                     " ╚═════╝ ╚═════╝ ╚══════╝╚═╝  ╚═╝    ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═══╝  ╚══════╝╚═╝  ╚═╝\r\n";
 
+    private static void drawGameTitle()
+    {
         Text.alignCenter(gameTitleInASCII);
     }
 
 
     public static int displayStartMenu(int minWindowWidth, int minWindowHeight)
     {
-        List<string> menuOption = new List<string> { "New Game", "Load Game", "Exit" };
+        List<string> menuOptions = new List<string> { "New Game", "Load Game", "Exit" };
 
-        int menuOptionLength = menuOption.Count;
+        int menuOptionLength = menuOptions.Count;
         int selectedOptionIndex = 0;
         ConsoleKey key;
 
@@ -39,11 +38,11 @@ class GameMenus
             {
                 if (i == selectedOptionIndex)
                 {
-                    Text.alignCenter(menuOption[i] + selector);
+                    Text.alignCenter(menuOptions[i] + selector);
                 }
                 else
                 {
-                    Text.alignCenter(menuOption[i]);
+                    Text.alignCenter(menuOptions[i]);
                 }
 
                 Console.WriteLine();
@@ -71,6 +70,7 @@ class GameMenus
     public static string displayNewGameMenu(int minWindowWidth, int minWindowHeight)
     {
         Console.CursorVisible = true;
+
         string username;
 
         do
@@ -80,6 +80,7 @@ class GameMenus
             Text.alignCenter("Enter driver name: ");
 
             username = Console.ReadLine();
+
             Screen.setupConsoleSize(minWindowWidth, minWindowHeight);
             Screen.clearConsole();
 
@@ -97,6 +98,7 @@ class GameMenus
 
         screenBuffer.writeLine(crushMessage);
         screenBuffer.writeLine(continueMessage);
+
         screenBuffer.renderToConsole();
 
         ConsoleKey key;
