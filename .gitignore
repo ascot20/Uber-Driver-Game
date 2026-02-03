@@ -361,6 +361,15 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
-/UberDriverGame/GameMenu.cs
-/UberDriverGame/GameMenu.cs
-/UberDriverGame/GameMenu.cs
+
+# macOS
+.DS_Store
+
+# JetBrains IDEs
+.idea/
+
+# Save game data
+**/Saved Games.json
+
+# Duplicate solution file
+/UberDriverGame/UberDriverGame.sln
